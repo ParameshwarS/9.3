@@ -1,0 +1,54 @@
+1. What is meant by FlumeNG ?
+
+Flume NG is a refactoring of Flume,which is used to transfer large amounts of data into the hdfs. 
+Flume saw incremental releases leading up to version 0.9.4. 
+At a high-level, Flume NG uses a single-hop message delivery guarantee semantics to provide end-to-end reliability for the system. 
+Flume Ng has several features of Flume in its architecture.
+It uses concepts such as :
+Source,Channel,Sink,Agent,Cient,Event,etc.
+
+2. Can Flume provide 100 % reliability to the data flow?
+
+Yes, Apache Flume provides end to end reliability because of its transactional approach in data flow.
+Transactional Approach:
+When a message moves from one agent to another, two transactions are started, one on the agent that delivers the event and the other on the agent that receives the event. 
+In order for the sending agent to commit it’s transaction, it must receive success indication from the receiving agent. The receiving agent only returns a success indication if it’s own transaction commits properly first. 
+This guarantees 100% reliable delivery semantics between the hops that the flow makes.
+
+3. Can Flume distributes data to multiple destinations?
+
+Apache Flume can collect data from a large set of sources and move them to multiple destinations.
+It is done using multiple channels.
+Multiple Channels can distribute data to multiple sinks.
+The dataflow from one source to multiple channels is known as fan-out flow. It is of two types -
+1. Replicating
+     The data flow where the data will be replicated in all the configured channels.
+2. Multiplexing
+     The data flow where the data will be sent to a selected channel which is mentioned in the header of the event.
+                       --------Channel 1 ---------Sink 1
+                      |     
+     eg:   source------  FAN OUT. 
+                      |
+                      ---------Channel 2 ---------Sink 2
+
+4. Explain about the different channel types in Flume. And which channel type is faster?memory
+
+Memory channel:
+In-memory, fast, non-durable event transport
+MemoryChannel is the implementation class
+
+Jdbc channel:
+JDBC-based, durable event transport (Derby-based)
+JDBCChannel is the implementation class
+
+File channel:
+File-based, durable event transport
+FileChannel is the implementation class
+
+Kafka channel:
+To write to Hadoop directly from Kafka without using a source.
+To write to Kafka directly from Flume sources without additional buffering.
+As a reliable and highly available channel for any source/sink combination.
+KafkaChannel is the implementation class
+
+memory channel type is faster
